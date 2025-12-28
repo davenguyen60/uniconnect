@@ -1,10 +1,25 @@
-# Bỏ qua file môi trường
+# 1. Bỏ qua file môi trường (Chứa mật khẩu) -> QUAN TRỌNG NHẤT
 .env
+.env.*
+!.env.example
 
-# Bỏ qua các thư mục rác khác (nên có)
+# 2. Bỏ qua file rác của Python (Compiled files)
 __pycache__/
-*.pyc
-.venv/
+*.py[cod]
+*$py.class
+
+# 3. Bỏ qua dữ liệu Database (Nếu lỡ có mount ra ngoài)
+postgres_data/
+redis_data/
+
+# 4. Bỏ qua thư mục ảo (Nếu chạy local)
 venv/
-.idea/
+.venv/
+env/
+
+# 5. File cấu hình của Editor (VS Code/Pycharm)
 .vscode/
+.idea/
+
+# 6. File log
+*.log

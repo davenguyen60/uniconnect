@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Import cấu hình
-from app.core.database import engine, Base
+# from app.core.database import engine, Base
 from app.core.config import settings
 from app.api import auth, users, activities
 
@@ -12,24 +12,19 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 
-# Import Models để SQLAlchemy tạo bảng
-from app.models.user import User
-from app.models.activity import Activity
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. Khởi tạo Database (Tạo bảng nếu chưa có)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    
-    # 2. Khởi tạo Redis Cache
-    redis = aioredis.from_url(settings.REDIS_URL, encoding="utf8", decode_responses=True)
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    # Khởi tạo Redis Cache
+    if settings.REDIS_URL:
+        redis = aioredis.from_url(settings.REDIS_URL, encoding="utf8", decode_responses=True)
+        FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
     
     yield
     
-    # 3. Đóng kết nối Redis khi tắt app
-    await redis.close()
+    # Đóng kết nối Redis khi tắt app
+    if settings.REDIS_URL:
+        await redis.close()
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -66,4 +61,8 @@ app.include_router(
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to UniConnect API"}
+    return {
+        "message": "Welcome to UniConnect API",
+        "docs": "/docs",
+        "version": "1.0.0"
+    }
