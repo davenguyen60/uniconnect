@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Import cấu hình
 from app.core.database import engine, Base
 from app.core.config import settings
-from app.api import auth, users
+from app.api import auth, users, activities
 
 # Import Redis
 from fastapi_cache import FastAPICache
@@ -56,6 +56,12 @@ app.include_router(
     users.router, 
     prefix=f"{settings.API_V1_STR}/users", 
     tags=["Users"]
+)
+
+app.include_router(
+    activities.router, 
+    prefix=f"{settings.API_V1_STR}/activities", 
+    tags=["Activities"]
 )
 
 @app.get("/")

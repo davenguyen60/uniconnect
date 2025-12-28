@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Foreign
 from sqlalchemy.sql import func
 from geoalchemy2 import Geography 
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import ARRAY
 from app.core.database import Base
 
 class Activity(Base):
@@ -11,7 +12,7 @@ class Activity(Base):
     title = Column(String, nullable=False, index=True)
     description = Column(Text)
     address = Column(String, nullable=True)
-    category = Column(String, index=True, nullable=False, default="general")
+    categories = Column(ARRAY(String), nullable=True, default=[])
     location = Column(Geography(geometry_type='POINT', srid=4326), nullable=True)
 
     owner_id = Column(Integer, ForeignKey("users.id"), index=True)

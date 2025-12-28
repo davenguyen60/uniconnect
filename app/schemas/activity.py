@@ -1,12 +1,12 @@
 from pydantic import BaseModel, Field
-from typing import Optional, Any
+from typing import Optional, Any, List
 from datetime import datetime
 
 # Base: Dùng chung
 class ActivityBase(BaseModel):
     title: str
     description: Optional[str] = None
-    category: str = "general"
+    categories: List[str] = []
     address: Optional[str] = None
     start_time: Optional[datetime] = None
     end_time: Optional[datetime] = None
