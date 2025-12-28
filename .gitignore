@@ -1,0 +1,10 @@
+# Bỏ qua file môi trường
+.env
+
+# Bỏ qua các thư mục rác khác (nên có)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+.vscode/
